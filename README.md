@@ -38,6 +38,10 @@ This is a template repo for running robotics research Jupyter Notebooks on Binde
     https://binder.intel4coro.de/v2/gh/{GITHUB_USER_NAME}/{REPO_NAME}/{REPO_BRANCH}?urlpath=lab/tree/{NOTEBOOK_PATH}
     ```
 
+    /XPhantomad/Context-Role-Oriented-Transport-Chain-Swarm.git
+
+    https://binder.intel4coro.de/v2/gh/XPhantomad/Context-Role-Oriented-Transport-Chain-Swarm/main?urlpath=lab/tree/notebooks/mujoco.ipynb
+
     Replace each placeholder with your own information:
 
       - `{GITHUB_USER_NAME}` => Your GitHub username.
