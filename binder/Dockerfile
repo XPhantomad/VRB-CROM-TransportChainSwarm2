@@ -98,7 +98,7 @@ WORKDIR ${REPO_DIR}
 ENV CODE_WORKING_DIRECTORY=${REPO_DIR}
 
 # The entrypoint of the docker image
-COPY Context-Role-Oriented-Transport-Chain-Swarm/run.sh /entrypoint.sh
+COPY /binder/entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 
