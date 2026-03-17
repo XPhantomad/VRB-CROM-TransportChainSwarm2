@@ -38,7 +38,7 @@ USER root
 RUN cd /usr/lib/x86_64-linux-gnu \
     && ln -s libglut.so.3.12.0 libglut.so.3
 
-RUN git clone -b main https://github.com/XPhantomad/Context-Role-Oriented-Transport-Chain-Swarm.git
+RUN git clone -b master https://github.com/XPhantomad/Context-Role-Oriented-Transport-Chain-Swarm.git
 
 USER root
 # Install ARGoS3
