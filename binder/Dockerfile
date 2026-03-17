@@ -9,24 +9,6 @@ RUN pip install -r /tmp/requirements.txt
 
 #===========================================================#
 
-# Copy content to the image
-ENV REPO_DIR=/home/repo
-RUN mkdir -p ${REPO_DIR}
-COPY . ${REPO_DIR}/
-RUN git config --global --add safe.directory ${REPO_DIR}
-
-# Set JupyterLab default directory
-WORKDIR ${REPO_DIR}
-
-# Set VSCODE default directory
-ENV CODE_WORKING_DIRECTORY=${REPO_DIR}
-
-# The entrypoint of the docker image
-COPY binder/entrypoint.sh /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
-
-
-
 # Change the default shell to Bash
 SHELL [ "/bin/bash" , "-c" ]
 
@@ -74,7 +56,7 @@ RUN sudo apt install -y python3.12 python3.12-venv ros-dev-tools
 RUN wget https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-1.10.10-linux-x86_64.tar.gz \
     && tar xzf julia-1.10.10-linux-x86_64.tar.gz
 
-ENV PATH="julia-1.10.10/bin:$PATH"
+ENV PATH="/julia-1.10.10/bin:$PATH"
 
 RUN julia -e 'using Pkg; Pkg.add.(["Sockets", "JSON", "Parameters"])'
 
@@ -101,5 +83,22 @@ RUN cd Context-Role-Oriented-Transport-Chain-Swarm/startup \
 
 #============= Install extra software packages =============#
 # RUN apt update && apt install -y curl
+
+
+# Copy content to the image
+ENV REPO_DIR=/home/repo
+RUN mkdir -p ${REPO_DIR}
+COPY . ${REPO_DIR}/
+RUN git config --global --add safe.directory ${REPO_DIR}
+
+# Set JupyterLab default directory
+WORKDIR ${REPO_DIR}
+
+# Set VSCODE default directory
+ENV CODE_WORKING_DIRECTORY=${REPO_DIR}
+
+# The entrypoint of the docker image
+COPY Context-Role-Oriented-Transport-Chain-Swarm/run.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
 
 
