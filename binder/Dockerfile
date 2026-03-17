@@ -1,22 +1,48 @@
 # Dockerfile of the base image: https://github.com/IntEL4CoRo/jupyter-ros2/blob/main/Dockerfile
-# FROM intel4coro/jupyter-ros2:jazzy-py3.12
-# USER root
+FROM intel4coro/jupyter-ros2:jazzy-py3.12
+USER root
 
-FROM osrf/ros:jazzy-desktop-full
 EXPOSE 3004
+
+# Install python packages
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt
+
+
+#===========================================================#
+
+# Copy content to the image
+ENV REPO_DIR=/home/repo
+RUN mkdir -p ${REPO_DIR}
+COPY . ${REPO_DIR}/
+RUN git config --global --add safe.directory ${REPO_DIR}
+
+# Set JupyterLab default directory
+WORKDIR ${REPO_DIR}
+
+# Set VSCODE default directory
+ENV CODE_WORKING_DIRECTORY=${REPO_DIR}
+
+# The entrypoint of the docker image
+COPY binder/entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
 
 
 # Change the default shell to Bash
 SHELL [ "/bin/bash" , "-c" ]
 
+USER root
 # Install Requirements
 RUN apt-get update && apt-get install -y git colcon cmake libfreeimage-dev libfreeimageplus-dev freeglut3-dev libxi-dev libxmu-dev liblua5.3-dev lua5.3 doxygen graphviz libgraphviz-dev asciidoc
 
+USER root
 RUN cd /usr/lib/x86_64-linux-gnu \
     && ln -s libglut.so.3.12.0 libglut.so.3
 
 RUN git clone -b main https://github.com/XPhantomad/Context-Role-Oriented-Transport-Chain-Swarm.git
 
+USER root
 # Install ARGoS3
 RUN cd Context-Role-Oriented-Transport-Chain-Swarm \
     # && git pull
@@ -75,38 +101,7 @@ RUN cd Context-Role-Oriented-Transport-Chain-Swarm/startup \
     && source ../rosWorkspace/install/setup.bash \
     && pip install -r requirements.txt 
 
-# For use of an other docker image
-
-# Install jupyterlab and git
-RUN apt-get update && apt-get install -y python3-pip git
-RUN pip3 install jupyterlab
-
-# Expose port for jupyterlab
-EXPOSE 8888
-
-
 #============= Install extra software packages =============#
 # RUN apt update && apt install -y curl
 
 
-
-# Install python packages
-COPY requirements.txt /tmp/requirements.txt
-RUN pip install -r /tmp/requirements.txt
-#===========================================================#
-
-# Copy content to the image
-ENV REPO_DIR=/home/repo
-RUN mkdir -p ${REPO_DIR}
-COPY . ${REPO_DIR}/
-RUN git config --global --add safe.directory ${REPO_DIR}
-
-# Set JupyterLab default directory
-WORKDIR ${REPO_DIR}
-
-# Set VSCODE default directory
-ENV CODE_WORKING_DIRECTORY=${REPO_DIR}
-
-# The entrypoint of the docker image
-COPY binder/entrypoint.sh /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
