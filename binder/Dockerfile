@@ -56,7 +56,7 @@ RUN sudo apt install -y python3.12 python3.12-venv ros-dev-tools
 RUN wget https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-1.10.10-linux-x86_64.tar.gz \
     && tar xzf julia-1.10.10-linux-x86_64.tar.gz
 
-ENV PATH="/julia-1.10.10/bin:$PATH"
+ENV PATH="julia-1.10.10/bin:$PATH"
 
 RUN julia -e 'using Pkg; Pkg.add.(["Sockets", "JSON", "Parameters"])'
 
