@@ -23,6 +23,10 @@ ENV CODE_WORKING_DIRECTORY=${REPO_DIR}
 COPY binder/entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
+
+RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    apt-get install -y ./google-chrome-stable_current_amd64.deb && \
+    rm google-chrome-stable_current_amd64.deb 
 #===========================================================#
 
 # Change the default shell to Bash
