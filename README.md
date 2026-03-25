@@ -8,7 +8,7 @@ This is a template repo for running robotics research Jupyter Notebooks on Binde
 
 - click on the binder item above and open the environment
 - open a virtual desktop from the launcher
-- open a terminal and run:
+- open a terminal and run in "repo" directory:
   - ```chmod +x ./Context-Role-Oriented-Transport-Chain-Swarm/VRBrun.sh```
   - ```./Context-Role-Oriented-Transport-Chain-Swarm/VRBrun.sh```
 - start the simulation in the virtual desktop in argos3
