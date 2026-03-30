@@ -45,6 +45,7 @@ ENV DISPLAY=:1
 
 # Install python packages
 USER root
+RUN pip install --upgrade
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
 
