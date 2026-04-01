@@ -3,6 +3,16 @@ from IPython.display import display, HTML
 from sidecar import Sidecar
 import ipywidgets as widgets
 
+def get_url_prefix():
+    try:
+        jupyterhub_user = os.environ["JUPYTERHUB_USER"]
+        domain_name = os.environ["BINDER_LAUNCH_HOST"]
+        domain_name = domain_name.replace("binder", "jupyter")
+    except KeyError:
+        jupyterhub_user = None
+        domain_name = "http://localhost:8888"
+    return f"{domain_name}/user/{jupyterhub_user}" if jupyterhub_user is not None else ''
+
 def display_desktop(anchor="split-right"):
     """
     Display the remote desktop in a JupyterLab Sidecar tab.
@@ -12,15 +22,7 @@ def display_desktop(anchor="split-right"):
                     'split-right', 'split-left', 'split-top', 'split-bottom',
                     'tab-before', 'tab-after'
     """
-    try:
-        jupyterhub_user = os.environ["JUPYTERHUB_USER"]
-        domain_name = os.environ["BINDER_LAUNCH_HOST"]
-        domain_name = domain_name.replace("binder", "jupyter")
-    except KeyError:
-        jupyterhub_user = None
-        domain_name = "http://localhost:8888"
-    url_prefix = f"{domain_name}/user/{jupyterhub_user}" if jupyterhub_user is not None else ''
-
+    url_prefix = get_url_prefix()
     remote_desktop_url = f"{url_prefix}/desktop"
 
     display(widgets.HTML(
