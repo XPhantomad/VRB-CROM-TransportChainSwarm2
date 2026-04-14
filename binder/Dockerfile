@@ -1,34 +1,21 @@
 # Dockerfile of the base image: https://github.com/IntEL4CoRo/jupyter-ros2/blob/main/Dockerfile
 FROM intel4coro/jupyter-ros2:jazzy-py3.12
 
-# Install python packages
+
 USER root
-COPY requirements.txt /tmp/requirements.txt
-RUN pip install -r /tmp/requirements.txt
+ENV PATH=$HOME/.local/bin:$PATH
 
-
-# Copy content to the image
+# Set Working Directory
 ENV REPO_DIR=/home/repo
 RUN mkdir -p ${REPO_DIR}
-COPY . ${REPO_DIR}/
-RUN git config --global --add safe.directory ${REPO_DIR}
-
-# Set JupyterLab default directory
 WORKDIR ${REPO_DIR}
 
-# Set VSCODE default directory
-ENV CODE_WORKING_DIRECTORY=${REPO_DIR}
 
-# The entrypoint of the docker image
-COPY binder/entrypoint.sh /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
-
+#============= Install extra software packages =============#
 
 RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
     apt-get install -y ./google-chrome-stable_current_amd64.deb && \
     rm google-chrome-stable_current_amd64.deb 
-#===========================================================#
-
 EXPOSE 3004
 
 # Change the default shell to Bash
@@ -105,9 +92,26 @@ RUN cd Context-Role-Oriented-Transport-Chain-Swarm/startup \
     && source ../rosWorkspace/install/setup.bash \
     && pip install -r requirements.txt 
 
-#============= Install extra software packages =============#
+# Install python packages
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt
+
+#===========================================================#
 # RUN apt update && apt install -y curl
 
+
+# Copy content to the image
+COPY . ${REPO_DIR}/
+RUN git config --global --add safe.directory ${REPO_DIR}
+
+# Set JupyterLab default directory
+WORKDIR ${REPO_DIR}
+# Set VSCODE default directory
+ENV CODE_WORKING_DIRECTORY=${REPO_DIR}
+
+# The entrypoint of the docker image
+COPY binder/entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
 
 
 
