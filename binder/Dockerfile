@@ -1,76 +1,21 @@
 # Dockerfile of the base image: https://github.com/IntEL4CoRo/jupyter-ros2/blob/main/Dockerfile
 FROM intel4coro/jupyter-ros2:jazzy-py3.12
 
-# Install VNC server and XFCE desktop environment
+
 USER root
-RUN apt-get -y -qq update \
- && apt-get -y -qq install \
-        dbus-x11 \
-        xfce4 \
-        xfce4-panel \
-        xfce4-session \
-        xfce4-settings \
-        xorg \
-        xubuntu-icon-theme \
-        fonts-dejavu \
-        software-properties-common \
-    # Disable the automatic screenlock since the account password is unknown
- && apt-get -y -qq remove xfce4-screensaver \
-    # chown $HOME to workaround that the xorg installation creates a
-    # /home/jovyan/.cache directory owned by root
-    # Create /opt/install to ensure it's writable by pip
- && mkdir -p /opt/install \
- && chown -R $NB_UID:$NB_GID $HOME /opt/install \
- && rm -rf /var/lib/apt/lists/*
+ENV PATH=$HOME/.local/bin:$PATH
 
-
-# Install a VNC server, either TigerVNC (default) or TurboVNC
-ENV PATH=/opt/TurboVNC/bin:$PATH
-RUN echo "Installing TurboVNC"; \
-    # Install instructions from https://turbovnc.org/Downloads/YUM
-    wget -q -O- https://packagecloud.io/dcommander/turbovnc/gpgkey | \
-    gpg --dearmor >/etc/apt/trusted.gpg.d/TurboVNC.gpg; \
-    wget -O /etc/apt/sources.list.d/TurboVNC.list https://raw.githubusercontent.com/TurboVNC/repo/main/TurboVNC.list; \
-    apt-get -y -qq update; \
-    apt-get -y -qq install \
-        turbovnc \
-    ; \
-    rm -rf /var/lib/apt/lists/*;
-USER $NB_USER
-RUN conda install -y websockify
-RUN pip install jupyter-remote-desktop-proxy
-ENV DISPLAY=:1
-
-
-
-# Install python packages
-USER root
-COPY requirements.txt /tmp/requirements.txt
-RUN pip install -r /tmp/requirements.txt
-
-
-# Copy content to the image
+# Set Working Directory
 ENV REPO_DIR=/home/repo
 RUN mkdir -p ${REPO_DIR}
-COPY . ${REPO_DIR}/
-RUN git config --global --add safe.directory ${REPO_DIR}
-
-# Set JupyterLab default directory
 WORKDIR ${REPO_DIR}
 
-# Set VSCODE default directory
-ENV CODE_WORKING_DIRECTORY=${REPO_DIR}
 
-# The entrypoint of the docker image
-COPY binder/entrypoint.sh /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
-
+#============= Install extra software packages =============#
 
 RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
     apt-get install -y ./google-chrome-stable_current_amd64.deb && \
     rm google-chrome-stable_current_amd64.deb 
-#===========================================================#
-
 EXPOSE 3004
 
 # Change the default shell to Bash
@@ -147,9 +92,26 @@ RUN cd Context-Role-Oriented-Transport-Chain-Swarm/startup \
     && source ../rosWorkspace/install/setup.bash \
     && pip install -r requirements.txt 
 
-#============= Install extra software packages =============#
+# Install python packages
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt
+
+#===========================================================#
 # RUN apt update && apt install -y curl
 
+
+# Copy content to the image
+COPY . ${REPO_DIR}/
+RUN git config --global --add safe.directory ${REPO_DIR}
+
+# Set JupyterLab default directory
+WORKDIR ${REPO_DIR}
+# Set VSCODE default directory
+ENV CODE_WORKING_DIRECTORY=${REPO_DIR}
+
+# The entrypoint of the docker image
+COPY binder/entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
 
 
 

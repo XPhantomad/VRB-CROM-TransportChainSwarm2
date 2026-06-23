@@ -1,12 +1,13 @@
 # binder-template
 
-[![Binder](https://binder.intel4coro.de/badge_logo.svg)](https://binder.intel4coro.de/v2/gh/XPhantomad/VRB-CROM-TransportChainSwarm2/main?labpath=%2Fnotebooks%2Fmujoco.ipynb)
+[![Binder](https://binder.intel4coro.de/badge_logo.svg)](https://binder.intel4coro.de/v2/gh/XPhantomad/VRB-CROM-TransportChainSwarm2/main?urlpath=lab/tree/notebooks/instructions.ipynb)
 
 This is a template repo for running robotics research Jupyter Notebooks on Binderhub.
 
 ## Quick Start: Start Transport Chain Swarm
 
 - click on the binder item above and open the environment
+- disable the simple switch in the bottom left corner
 - open a virtual desktop from the launcher
 - open a terminal and run in "repo" directory:
   - ```chmod +x ./Context-Role-Oriented-Transport-Chain-Swarm/VRBrun.sh```
@@ -23,9 +24,9 @@ google-chrome \
 
 ## Launcher Urls
 
-- JupyterLab: https://binder.intel4coro.de/v2/gh/IntEL4CoRo/binder-template.git/main?urlpath=lab/tree/notebooks/mujoco.ipynb
+- JupyterLab: https://binder.intel4coro.de/v2/gh/IntEL4CoRo/binder-template.git/main?urlpath=lab/tree/notebooks/instructions.ipynb
 
-- VScode: https://binder.intel4coro.de/v2/gh/IntEL4CoRo/binder-template.git/main?urlpath=vscode?folder=/home/repo
+- VScode: https://binder.intel4coro.de/v2/gh/XPhantomad/VRB-CROM-TransportChainSwarm2/binder-template.git/main?urlpath=vscode?folder=/home/repo
 
 ## Create a new VRB lab from this template
 
