@@ -62,9 +62,9 @@ ENV PATH="julia-1.10.10/bin:$PATH"
 RUN julia -e 'using Pkg; Pkg.add.(["Sockets", "JSON", "Parameters"])'
 
 # Pull the actual state after the long building tasks
-RUN cd Context-Role-Oriented-Transport-Chain-Swarm/ \
-    && git status \
-    && git pull
+# RUN cd Context-Role-Oriented-Transport-Chain-Swarm/ \
+#    && git status \
+#    && git pull
     
 RUN cd ros_ws \
     && chmod +x build.sh \
