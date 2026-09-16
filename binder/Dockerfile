@@ -36,7 +36,7 @@ RUN git clone -b master https://github.com/XPhantomad/Context-Role-Oriented-Tran
 USER root
 # Install ARGoS3
 RUN cd Context-Role-Oriented-Transport-Chain-Swarm \
-    && git pull
+    && git pull \
     && cd Dependencies \
     && apt-get install -y ./argos3_simulator-3.0.0-x86_64-beta59.deb
 
