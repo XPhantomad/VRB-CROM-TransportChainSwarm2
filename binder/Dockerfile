@@ -36,7 +36,6 @@ RUN git clone -b master https://github.com/XPhantomad/Context-Role-Oriented-Tran
 USER root
 # Install ARGoS3
 RUN cd Context-Role-Oriented-Transport-Chain-Swarm \
-    # && git pull
     && cd Dependencies \
     && apt-get install -y ./argos3_simulator-3.0.0-x86_64-beta59.deb
 
@@ -70,6 +69,11 @@ RUN wget https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-1.10.10-lin
 ENV PATH="julia-1.10.10/bin:$PATH"
 
 RUN julia -e 'using Pkg; Pkg.add.(["Sockets", "JSON", "Parameters"])'
+
+# Pull the actual state after the long building tasks
+RUN cd Context-Role-Oriented-Transport-Chain-Swarm/ \
+    && git status \
+    && git pull
 
 RUN cd Context-Role-Oriented-Transport-Chain-Swarm/runtimemodel \
     && python3 -m venv . \
