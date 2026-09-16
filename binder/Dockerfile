@@ -11,11 +11,6 @@ RUN mkdir -p ${REPO_DIR}
 WORKDIR ${REPO_DIR}
 
 
-#============= Install extra software packages =============#
-
-RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
-    apt-get install -y ./google-chrome-stable_current_amd64.deb && \
-    rm google-chrome-stable_current_amd64.deb 
 EXPOSE 3004
 
 # Change the default shell to Bash
