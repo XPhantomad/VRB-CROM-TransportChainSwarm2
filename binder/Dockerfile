@@ -52,10 +52,6 @@ ENV LD_LIBRARY_PATH="/root/gsl/lib:$LD_LIBRARY_PATH"
 # Build ARGoS3-ROS2-Bridge
 RUN ln -s Context-Role-Oriented-Transport-Chain-Swarm/rosWorkspace ros_ws 
 
-RUN cd ros_ws \
-    && chmod +x build.sh \
-    && ./build.sh 
-
 RUN sudo apt install -y python3.12 python3.12-venv ros-dev-tools 
 
 RUN wget https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-1.10.10-linux-x86_64.tar.gz \
@@ -69,6 +65,10 @@ RUN julia -e 'using Pkg; Pkg.add.(["Sockets", "JSON", "Parameters"])'
 RUN cd Context-Role-Oriented-Transport-Chain-Swarm/ \
     && git status \
     && git pull
+    
+RUN cd ros_ws \
+    && chmod +x build.sh \
+    && ./build.sh 
 
 RUN cd Context-Role-Oriented-Transport-Chain-Swarm/runtimemodel \
     && python3 -m venv . \
